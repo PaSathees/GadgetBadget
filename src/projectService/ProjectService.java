@@ -10,11 +10,6 @@ import javax.ws.rs.core.MediaType;
 @Path("Projects")
 public class ProjectService {
 	
-	@GET
-	@Path("/")
-	@Produces(MediaType.TEXT_HTML)
-	public String hello() {
-		return "Hello world!";
-	}
+
 
 }
