@@ -26,6 +26,21 @@ public class ProjectService {
 		return output;
 	}
 	
+	@GET
+	@Path("/Inventor")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readProjects(String InventorData) {
+		JsonObject invetorObject = new JsonParser().parse(InventorData).getAsJsonObject();
+		
+		String username = invetorObject.get("Username").getAsString();
+		String password = invetorObject.get("Password").getAsString();
+		
+		String output = project.readProjects(username, password);
+		
+		return output;
+	}
+	
 	
 	@POST
 	@Path("/")
