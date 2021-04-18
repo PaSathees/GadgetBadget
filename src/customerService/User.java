@@ -54,7 +54,33 @@ public class User {
 		return output;
 	}
 	
-//	public String getUserID(String username) {
-//		
-//	}
+	public int getUserID(String username) {
+		int output = -1;
+		 
+		 try {
+			Connection con = this.connectForProjectManagement();
+			
+			if (con == null) {
+				return -1;
+			}
+			
+			//creating prepared statement to find customer
+			String query = "select userID from User where username = ?";
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			preparedStatement.setString(1, username);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			if (rs.next()) {
+				output = rs.getInt("userID");
+			} else {
+				output = -1;
+			}
+			
+		} catch (Exception e) {
+			output = -1;
+			System.err.println(e.getMessage());
+		}
+		 
+		return output;
+	}
 }
