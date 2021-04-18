@@ -182,12 +182,75 @@ public class Project {
 				
 	}
 	
-//	public String updateProject(String projectID, String projectTitle, 
-//								String projectType, String projectDesc, 
-//								String projectBudget, String unitPrice, 
-//								String username, String password) {
-//
-//	}
+	public String updateProject(String projectID, String projectTitle, 
+								String projectType, String projectDesc, 
+								String projectBudget, String unitCost, 
+								String username, String password) {
+		
+		String output = "";
+		
+		try {
+			//connecting to project database
+			Connection connection = this.connect();
+			
+			if (connection == null) {
+				return "Error connecting to project database";
+			}
+			
+			//check if it authenticated
+			if (user.isAuthenticated(username, password)) {
+				
+				if (user.getUserRole(username).equalsIgnoreCase("Inventor")) {
+					
+					//check whether user is the inventor of the Project					
+					int userID = user.getUserID(username);					
+					String query = "select * from Project where inventorID = ?";
+					PreparedStatement preparedStatement = connection.prepareStatement(query);					
+					preparedStatement.setInt(1, userID);
+					ResultSet rs = preparedStatement.executeQuery();	
+										
+					if (rs.next()) {
+						String dbProjectID = Integer.toString(rs.getInt("projectID"));
+						if (dbProjectID.equals(projectID)) {
+							
+							//creating prepared statement for update
+							String query2 = "update Project set projectTitle = ?, projectType = ? , projectDesc = ?, "
+									+ "projectBudget = ?, unitCost = ? where projectID = ?";
+							PreparedStatement preparedStatement2 = connection.prepareStatement(query2);
+							
+							//binding values to prepared statement
+							preparedStatement2.setString(1, projectTitle);
+							preparedStatement2.setString(2, projectType);
+							preparedStatement2.setString(3, projectDesc);
+							preparedStatement2.setDouble(4, Double.parseDouble(projectBudget));
+							preparedStatement2.setFloat(5, Float.parseFloat(unitCost));
+							preparedStatement2.setInt(6, Integer.parseInt(projectID));							
+							
+							preparedStatement2.execute();
+							output = "Project updated successfully";					
+						} else {
+							output = "You are not the inventor of this Project";
+						}
+					}				
+					
+				} else {
+					output = "You are not an inventor";
+				}
+				
+			} else {
+				output = "You are not authenticated";
+			}	
+			
+			connection.close();
+			
+		} catch (Exception e) {
+			output = "Error updating project";
+			System.err.println(e.getMessage());
+		}
+		
+		return output;
+
+	}
 //	
 //	public String deleteProject(String projectID, String username, String password) {
 //
