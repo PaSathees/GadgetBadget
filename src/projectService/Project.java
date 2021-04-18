@@ -5,6 +5,7 @@ import customerService.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class Project {
 	
@@ -25,9 +26,48 @@ public class Project {
 		return con;
 	}
 	
-//	public String readProject(String projectID) {
-//		
-//	}
+	public String readProject(String projectID) {
+		String output = "";
+		
+		try {
+			//connecting to project database
+			Connection connection = this.connect();
+			
+			if (connection == null) {
+				return "Error connecting to project database";
+			}
+								
+			//creating prepared statement for reading
+			String query = "select * from Project where projectID = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			
+			//binding values to prepared statement
+			preparedStatement.setInt(1, Integer.parseInt(projectID));
+			ResultSet rs = preparedStatement.executeQuery();			
+			
+			if (rs.next()) {
+				String dbProjectID = Integer.toString(rs.getInt("projectID"));
+				String projectTitle = rs.getString("projectTitle");
+				String projectType = rs.getString("projectType");
+				String projectDesc = rs.getString("projectDesc");
+				String projectBudget = Double.toString(rs.getDouble("projectBudget"));
+				String unitCost = Integer.toString(rs.getInt("unitCost"));
+				
+				
+				output += "{\"ProjectID\":\"" + dbProjectID + "\", \"ProjectTitle\":\"" + projectTitle +"\", "
+						+ "\"ProjectType\":\"" + projectType + "\", \"ProjectDesc\":\"" + projectDesc + "\", "
+						+ "\"ProjectBudget\":\"" + projectBudget + "\", \"UnitCost\":\"" + unitCost + "\"}";
+			}			
+				
+			connection.close();
+			
+		} catch (Exception e) {
+			output = "Error reading project";
+			System.err.println(e.getMessage());
+		}
+		
+		return output;
+	}
 //	
 //	public String readProjects(String username, String password) {
 //		
@@ -35,7 +75,7 @@ public class Project {
 	
 	public String createProject(String projectTitle, String projectType, 
 								String projectDesc, String projectBudget, 
-								String unitPrice, String username, String password) {
+								String unitCost, String username, String password) {
 		
 		String output = "";
 		
@@ -57,7 +97,7 @@ public class Project {
 					
 					//creating prepared statement for insert
 					String query = "insert into Project (projectTitle, projectType, projectDesc, "
-							+ "projectBudget, unitPrice, inventorID) values (?, ?, ?, ?, ?, ?)";
+							+ "projectBudget, unitCost, inventorID) values (?, ?, ?, ?, ?, ?)";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					
 					//binding values to prepared statement
@@ -65,7 +105,7 @@ public class Project {
 					preparedStatement.setString(2, projectType);
 					preparedStatement.setString(3, projectDesc);
 					preparedStatement.setDouble(4, Double.parseDouble(projectBudget));
-					preparedStatement.setFloat(5, Float.parseFloat(unitPrice));
+					preparedStatement.setFloat(5, Float.parseFloat(unitCost));
 					preparedStatement.setInt(6, userID);
 					
 					
