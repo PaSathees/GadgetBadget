@@ -10,24 +10,27 @@ import com.google.gson.*;
 @Path("Projects")
 public class ProjectService {
 	
-//	Project project = new Project();
-//	
-//	@POST
-//	@Path("/")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.TEXT_PLAIN)
-//	public String insertProject(String projectData) {
-//		JsonObject projectObject = new JsonParser().parse(projectData).getAsJsonObject();
-//		
-//		String projectTitle = projectObject.get("ProjectTitle").getAsString();
-//		String projectType = projectObject.get("ProjectType").getAsString();
-//		String projectDesc = projectObject.get("ProjectDesc").getAsString();
-//		String projectBudget = projectObject.get("ProjectBudget").getAsString();
-//		String unitCost = projectObject.get("UnitCost").getAsString();
-//		String username = projectObject.get("Username").getAsString();
-//		String password = projectObject.get("Password").getAsString();
-//		
-//		String output = project.
-//	}
+	Project project = new Project();
+	
+	@POST
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String insertProject(String projectData) {
+		JsonObject projectObject = new JsonParser().parse(projectData).getAsJsonObject();
+		
+		String projectTitle = projectObject.get("ProjectTitle").getAsString();
+		String projectType = projectObject.get("ProjectType").getAsString();
+		String projectDesc = projectObject.get("ProjectDesc").getAsString();
+		String projectBudget = projectObject.get("ProjectBudget").getAsString();
+		String unitCost = projectObject.get("UnitCost").getAsString();
+		String username = projectObject.get("Username").getAsString();
+		String password = projectObject.get("Password").getAsString();
+		
+		String output = project.createProject(projectTitle, projectType, projectDesc, 
+				projectBudget, unitCost, username, password);
+		
+		return output;		
+	}
 
 }
