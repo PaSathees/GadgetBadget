@@ -30,6 +30,30 @@ public class Project {
 //	public String createProject(String projectTitle, String projectType, 
 //								String projectDesc, String projectBudget, 
 //								String unitPrice, String username) {
+//		
+//		String output = "";
+//		
+//		try {
+//			//connecting to project database
+//			Connection connection = this.connect();
+//			
+//			if (connection == null) {
+//				return "Error connecting to project database";
+//			}
+//			
+//			//get userID for the username
+//			
+//			
+//			//creating prepared statement for insert
+//			String query = "insert into Project (projectTitle, projectType, projectDesc, "
+//					+ "projectBudget, unitPrice, inventorID) values (?, ?, ?, ?, ?, ?)";
+//			
+//		} catch (Exception e) {
+//			output = "Error inserting project";
+//			System.err.println(e.getMessage());
+//		}
+//		
+//		return output;
 //				
 //	}
 //	

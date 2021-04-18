@@ -2,6 +2,8 @@ package customerService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class User {
 	public Connection connectForProjectManagement() {
@@ -19,10 +21,39 @@ public class User {
 		return con;
 	}
 	
-//	public boolean isAuthenticated(String username) {
-//		
-//	}
-//	
+	public boolean isAuthenticated(String username, String password) {
+		 boolean output = false;
+		 
+		 try {
+			Connection con = this.connectForProjectManagement();
+			
+			if (con == null) {
+				return false;
+			}
+			
+			//creating prepared statement to find customer
+			String query = "select username, password from User where username = ?";
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			preparedStatement.setString(1, username);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			if (rs.next()) {
+				String dbPassword = rs.getString("password");
+				if (dbPassword == password) {
+					output = true;
+				} else {
+					output = false;
+				}
+			}
+			
+		} catch (Exception e) {
+			output = false;
+			System.err.println(e.getMessage());
+		}
+		 
+		return output;
+	}
+	
 //	public String getUserID(String username) {
 //		
 //	}
