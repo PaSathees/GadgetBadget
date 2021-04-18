@@ -13,7 +13,7 @@ public class User {
 			Class.forName("com.mysql.jdbc.Driver");//not necessary as this way is deprecated
 			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:8889/GB_Customer", "root", 
 					"root");
-			System.out.println("Connection successfully established with Project DB");
+			System.out.println("Connection successfully established with User DB");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,7 +39,7 @@ public class User {
 			
 			if (rs.next()) {
 				String dbPassword = rs.getString("password");
-				if (dbPassword == password) {
+				if (dbPassword.equals(password)) {
 					output = true;
 				} else {
 					output = false;

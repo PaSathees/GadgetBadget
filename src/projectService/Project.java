@@ -68,12 +68,17 @@ public class Project {
 					preparedStatement.setFloat(5, Float.parseFloat(unitPrice));
 					preparedStatement.setInt(6, userID);
 					
-					if (preparedStatement.execute()) {
-						output = "Project inserted successfully";
-					}
 					
+					
+					preparedStatement.execute();
+					output = "Project inserted successfully";					
+					
+				} else {
+					output = "You are not authorized to insert Project";
 				}
 				
+			} else {
+				output = "you are not authenticated";
 			}	
 			
 			connection.close();
