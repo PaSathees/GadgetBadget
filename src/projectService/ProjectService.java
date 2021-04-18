@@ -12,6 +12,20 @@ public class ProjectService {
 	
 	Project project = new Project();
 	
+	@GET
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readProject(String projectData) {
+		JsonObject projectObject = new JsonParser().parse(projectData).getAsJsonObject();
+		
+		String projectID = projectObject.get("ProjectID").getAsString();
+		
+		String output = project.readProject(projectID);
+		
+		return output;
+	}
+	
 	
 	@POST
 	@Path("/")
