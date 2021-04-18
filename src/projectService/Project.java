@@ -68,10 +68,60 @@ public class Project {
 		
 		return output;
 	}
-//	
-//	public String readProjects(String username, String password) {
-//		
-//	}
+	
+	public String readProjects(String username, String password) {
+		String output = "";
+		
+		try {
+			//connecting to project database
+			Connection connection = this.connect();
+			
+			if (connection == null) {
+				return "Error connecting to project database";
+			}			
+			
+			//check if it authenticated
+			if (user.isAuthenticated(username, password)) {				
+					
+				//get userID for the username
+				int inventorID = user.getUserID(username);
+					
+				//creating prepared statement for reading
+				String query = "select * from Project where inventorID = ?";
+				PreparedStatement preparedStatement = connection.prepareStatement(query);
+				
+				//binding values to prepared statement
+				preparedStatement.setInt(1, inventorID);
+				ResultSet rs = preparedStatement.executeQuery();	
+				
+				output = "[";
+				
+				while (rs.next()) {
+					String dbProjectID = Integer.toString(rs.getInt("projectID"));
+					String projectTitle = rs.getString("projectTitle");
+					String projectType = rs.getString("projectType");
+					String projectDesc = rs.getString("projectDesc");
+					String projectBudget = Double.toString(rs.getDouble("projectBudget"));
+					String unitCost = Integer.toString(rs.getInt("unitCost"));
+					
+					
+					output += "{\"ProjectID\":\"" + dbProjectID + "\", \"ProjectTitle\":\"" + projectTitle +"\", "
+							+ "\"ProjectType\":\"" + projectType + "\", \"ProjectDesc\":\"" + projectDesc + "\", "
+							+ "\"ProjectBudget\":\"" + projectBudget + "\", \"UnitCost\":\"" + unitCost + "\"},";
+				}				
+				
+				output += "]";								
+			} 		
+				
+			connection.close();
+			
+		} catch (Exception e) {
+			output = "Error reading project";
+			System.err.println(e.getMessage());
+		}
+		
+		return output;
+	}
 	
 	public String createProject(String projectTitle, String projectType, 
 								String projectDesc, String projectBudget, 
