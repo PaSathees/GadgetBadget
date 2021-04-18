@@ -83,4 +83,36 @@ public class User {
 		 
 		return output;
 	}
+	
+	public String getUserRole(String username) {
+		String output = null;
+		 
+		 try {
+			Connection con = this.connectForProjectManagement();
+			
+			if (con == null) {
+				return null;
+			}
+			
+			//creating prepared statement to find customer
+			String query = "select role from User where username = ?";
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			preparedStatement.setString(1, username);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			if (rs.next()) {
+				output = rs.getString("role");
+			} else {
+				output = null;
+			}
+			
+		} catch (Exception e) {
+			output = null;
+			System.err.println(e.getMessage());
+		}
+		 
+		return output;
+	}
+	
+	
 }
