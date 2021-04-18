@@ -84,5 +84,21 @@ public class ProjectService {
 		
 		return output;		
 	}
+	
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteProject(String projectData) {
+		JsonObject projectObject = new JsonParser().parse(projectData).getAsJsonObject();
+		
+		String projectID = projectObject.get("ProjectID").getAsString();		
+		String username = projectObject.get("Username").getAsString();
+		String password = projectObject.get("Password").getAsString();
+		
+		String output = project.deleteProject(projectID, username, password);
+		
+		return output;		
+	}
 
 }
