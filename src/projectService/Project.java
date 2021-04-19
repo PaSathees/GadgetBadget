@@ -204,14 +204,14 @@ public class Project {
 					
 					//check whether user is the inventor of the Project					
 					int userID = user.getUserID(username);					
-					String query = "select * from Project where inventorID = ?";
+					String query = "select * from Project where projectID = ?";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);					
-					preparedStatement.setInt(1, userID);
+					preparedStatement.setInt(1, Integer.parseInt(projectID));
 					ResultSet rs = preparedStatement.executeQuery();	
 										
 					if (rs.next()) {
-						String dbProjectID = Integer.toString(rs.getInt("projectID"));
-						if (dbProjectID.equals(projectID)) {
+						int inventorID = rs.getInt("inventorID");						
+						if (inventorID == userID) {
 							
 							//creating prepared statement for update
 							String query2 = "update Project set projectTitle = ?, projectType = ? , projectDesc = ?, "
@@ -231,6 +231,8 @@ public class Project {
 						} else {
 							output = "You are not the inventor of this Project";
 						}
+					} else {
+						output = "Project does not exist";
 					}				
 					
 				} else {
@@ -270,14 +272,14 @@ public class Project {
 					
 					//check whether user is the inventor of the Project					
 					int userID = user.getUserID(username);					
-					String query = "select * from Project where inventorID = ?";
+					String query = "select * from Project where projectID = ?";
 					PreparedStatement preparedStatement = connection.prepareStatement(query);					
-					preparedStatement.setInt(1, userID);
+					preparedStatement.setInt(1, Integer.parseInt(projectID));
 					ResultSet rs = preparedStatement.executeQuery();	
 										
 					if (rs.next()) {
-						String dbProjectID = Integer.toString(rs.getInt("projectID"));
-						if (dbProjectID.equals(projectID)) {
+						int inventorID = rs.getInt("inventorID");						
+						if (inventorID == userID) {
 							
 							//creating prepared statement for update
 							String query2 = "delete from Project where projectID = ?";
@@ -291,7 +293,10 @@ public class Project {
 						} else {
 							output = "You are not the inventor of this Project";
 						}
-					}				
+						
+					} else {
+						output = "Project does not exist";
+					}
 					
 				} else {
 					output = "You are not an inventor";
