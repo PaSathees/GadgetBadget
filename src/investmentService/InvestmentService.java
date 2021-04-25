@@ -23,9 +23,9 @@ public class InvestmentService {
 	@Path("/") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String insertInvestment(@FormParam("iname") String iname,@FormParam("phone") String phone,@FormParam("amount") String amount,@FormParam("description") String description) {
+	public String insertInvestment(@FormParam("iname") String iname,@FormParam("date") String date,@FormParam("amount") String amount,@FormParam("description") String description) {
 		
-		String output = InvestmentObj.insertInvestment(iname, phone, amount, description);
+		String output = InvestmentObj.insertInvestment(iname, date, amount, description);
 		return output;
 	}
 	
@@ -41,11 +41,11 @@ public class InvestmentService {
 	
 	 String iID = Object.get("iID").getAsString();
 	 String iname = Object.get("iname").getAsString();
-	 String phone = Object.get("phone").getAsString();
+	 String date = Object.get("date").getAsString();
 	 String amount = Object.get("amount").getAsString();
 	 String description = Object.get("description").getAsString();
 	
-	 String output = InvestmentObj.updateInvestment(iID, iname, phone, amount, description);
+	 String output = InvestmentObj.updateInvestment(iID, iname, date, amount, description);
 	
 	 return output;
 	}

@@ -19,7 +19,7 @@ public class Investment {
 		return con;
 	 }
 	
-	public String insertInvestment(String iname, String phone, String amount, String description)
+	public String insertInvestment(String iname, String date, String amount, String description)
 	 {
 		String output = "";
 		try
@@ -29,13 +29,13 @@ public class Investment {
 			{return "Error while connecting to the database for inserting."; }
 			
 			
-			String query = "INSERT INTO `investment`(`iID`, `iname`, `phone`, `amount`, `description`) values (?, ?, ?, ?, ?)";
+			String query = "INSERT INTO `investment`(`iID`, `iname`, `date`, `amount`, `description`) values (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			// binding values
 			preparedStmt.setInt(1, 0);
 			preparedStmt.setString(2, iname);
-			preparedStmt.setString(3, phone);
+			preparedStmt.setString(3, date);
 			preparedStmt.setDouble(4, Double.parseDouble(amount));
 			preparedStmt.setString(5, description);
 			// execute the statement
@@ -64,13 +64,13 @@ public class Investment {
 				{return "Error while connecting to the database for reading."; }
 				
 				// Prepare the html table to be displayed
-				output = "<table border='1'><tr><th>Investor name</th>" +
-						"<th>Investor phoneNo</th>" +
+				output = "<table border='1'><tr><th>Investment title</th>" +
+						"<th>Investing date</th>" +
 						"<th>Investing amount</th>"+
 						"<th>description</th>" +
 						"<th>Update</th><th>Remove</th></tr>";
 
-				String query = "SELECT `iID`, `iname`, `phone`, `amount`, `description` FROM `investment`";
+				String query = "SELECT `iID`, `iname`, `date`, `amount`, `description` FROM `investment`";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query);
 	
@@ -80,7 +80,7 @@ public class Investment {
 				{
 						String iID = Integer.toString(rs.getInt("iID"));
 						String iname = rs.getString("iname");
-						String phone = rs.getString("phone");
+						String date = rs.getString("date");
 						String amount = Double.toString(rs.getDouble("amount"));
 						String description = rs.getString("description");
 	 
@@ -88,7 +88,7 @@ public class Investment {
 						
 						output += "<tr><td><form method='post' action='investment.jsp'><input id='hidItemIDUpdate' name='hidItemIDUpdate' type='hidden' value='" + iID + "'>"
 								+ iname + "</td>";
-						output += "<td>" + phone + "</td>";
+						output += "<td>" + date + "</td>";
 						output += "<td>" + amount + "</td>";
 						output += "<td>" + description + "</td>";
 	
@@ -113,7 +113,7 @@ public class Investment {
 			return output;
 	 }
 	
-	public String updateInvestment(String iID, String iname, String phone, String amount, String description)
+	public String updateInvestment(String iID, String iname, String date, String amount, String description)
 	{
 		 String output = "";
 		 try
@@ -123,13 +123,13 @@ public class Investment {
 			 {return "Error while connecting to the database for updating."; }
 		
 			 // create a prepared statement
-			 String query = "UPDATE `investment` SET `iname`=?,`phone`=?,`amount`=?,`description`=? WHERE  `iID`= ? ";
+			 String query = "UPDATE `investment` SET `iname`=?,`date`=?,`amount`=?,`description`=? WHERE  `iID`= ? ";
 			 PreparedStatement preparedStmt = con.prepareStatement(query);
 		
 			 // binding values
 			 preparedStmt.setString(1, iname);
 			 preparedStmt.setDouble(3, Double.parseDouble(amount));
-			 preparedStmt.setString(2, phone);
+			 preparedStmt.setString(2, date);
 			 preparedStmt.setString(4, description);
 			 preparedStmt.setInt(5, Integer.parseInt(iID));
 		
